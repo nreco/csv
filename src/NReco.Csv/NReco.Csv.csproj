@@ -12,7 +12,27 @@
     <AssemblyName>NReco.Csv</AssemblyName>
     <PackageId>NReco.Csv</PackageId>
     <PackageTags>csv;parser;reader;csvhelper;netstandard;netcore</PackageTags>
-	<PackageReleaseNotes>
+	<PackageReleaseNotes>How to use:
+
+// parse CSV 	
+using (var streamRdr = new StreamReader(inputStream)) {
+  var csvReader = new CsvReader(streamRdr, ",");
+  while (csvReader.Read()) {
+    for (int i=0; i&lt;csvReader.FieldsCount; i++) {
+	  string val = csvReader[i];
+    }
+  }
+}
+
+// generate CSV
+using (var streamWr = new StreamWrite(outputStream)) {
+  var csvWriter = new CsvWriter(streamWr);
+  // write line
+  csvWriter.WriteField("Value with double quote\"");
+  csvWriter.WriteField("And with\nnew line");
+  csvWriter.WriteField("Normal");
+  csvWriter.NextRecord();
+}
 </PackageReleaseNotes>	
     <PackageIconUrl>https://www.nrecosite.com/img/nreco-logo-200.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/nreco/csv</PackageProjectUrl>
