@@ -7,7 +7,7 @@ Ultra-fast C# CSV parser: implements stream reader and writer.
 * lightweight: bare csv parser with simple API
 * tolerant to not-fully correct CSV files, you can control max length of CSV file (useful for processing end-user CSV uploads)
 * can be used for stream processing of many-GB CSV files
-* supports .NET Framework 4.5+ and .NET Core
+* supports .NET Framework 4.5+ and .NET Core/.NET5
 
 ## How to use
 Parse CSV stream:
@@ -15,7 +15,7 @@ Parse CSV stream:
 using (var streamRdr = new StreamReader(inputStream)) {
   var csvReader = new CsvReader(streamRdr, ",");
   while (csvReader.Read()) {
-    for (int i=0; i&lt;csvReader.FieldsCount; i++) {
+    for (int i=0; i<csvReader.FieldsCount; i++) {
       string val = csvReader[i];
     }
   }
@@ -38,6 +38,6 @@ using (var streamWr = new StreamWrite(outputStream)) {
 NReco.Csv is in production use at [SeekTable.com](https://www.seektable.com/) and [PivotData microservice](https://www.nrecosite.com/pivotdata_service.aspx).
 
 ## License
-Copyright 2017-2018 Vitaliy Fedorchenko and contributors
+Copyright 2017-2021 Vitaliy Fedorchenko and contributors
 
 Distributed under the MIT license
