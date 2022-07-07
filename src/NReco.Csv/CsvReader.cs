@@ -276,7 +276,7 @@ namespace NReco.Csv {
 
 			if (fieldsCount==1 && fields[0].Length==0) {
 				// skip empty lines
-				goto start;
+				goto Start;
 			}
 
 			return true;
