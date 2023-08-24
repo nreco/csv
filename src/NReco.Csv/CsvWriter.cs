@@ -38,6 +38,8 @@ namespace NReco.Csv {
 
 		public bool QuoteAllFields { get; set; } = false;
 
+		public bool QuoteIfTrimPossible { get; set; } = true;
+
 		public bool Trim { get; set; } = false;
 
 		char[] quoteRequiredChars;
@@ -66,15 +68,15 @@ namespace NReco.Csv {
 				field = field.Trim();
 			}
 
-			if (field.Length>0) {
+			if (field.Length > 0) {
+				if (QuoteIfTrimPossible && (field[0] == ' ' || field[field.Length - 1] == ' ')) {
+					shouldQuote = true;
+				}
 				if (shouldQuote // Quote all fields
 					|| field.Contains(quoteString) // Contains quote
-					|| field[0] == ' ' // Starts with a space
-					|| field[field.Length - 1] == ' ' // Ends with a space
 					|| field.IndexOfAny(quoteRequiredChars) > -1 // Contains chars that require quotes
 					|| (checkDelimForQuote && field.Contains(Delimiter)) // Contains delimiter
-				)
-				{
+				) {
 					shouldQuote = true;
 				}
 			}

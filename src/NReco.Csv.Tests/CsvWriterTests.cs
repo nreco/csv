@@ -33,7 +33,20 @@ namespace NReco.Csv.Tests {
 
 			var expected = "AAA,\"A\"\"AA\",\" AAA \",\"Something, again\",\"Something\nonce more\"\r\nJust one value\r\n";
 			Assert.Equal(expected, strWr.ToString());
+
+			strWr = new StringWriter();
+			csvWriter = new CsvWriter(strWr);
+			csvWriter.QuoteIfTrimPossible = false;
+			csvWriter.WriteField("");
+			csvWriter.WriteField(" ");
+			csvWriter.WriteField("\"");
+			csvWriter.WriteField(" aa ");
+			csvWriter.NextRecord();
+
+			expected = ", ,\"\"\"\", aa \r\n";
+			Assert.Equal(expected, strWr.ToString());
 		}
+
 
 
 	}
