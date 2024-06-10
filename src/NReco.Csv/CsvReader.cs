@@ -24,6 +24,9 @@ namespace NReco.Csv {
 	/// <remarks>API is similar to CSVHelper CsvReader.</remarks>
 	public class CsvReader {
 
+		/// <summary>
+		/// Delimiter used in CSV file.
+		/// </summary>
 		public string Delimiter { get; private set; }
 		int delimLength;
 
@@ -40,9 +43,27 @@ namespace NReco.Csv {
 
 		TextReader rdr;
 
+		/// <summary>
+		/// Create CSV reader from text reader.
+		/// </summary>
+		/// <param name="rdr">
+		/// Text reader that provides CSV data.
+		/// </param>
 		public CsvReader(TextReader rdr) : this(rdr, ",") {
 		}
 
+		/// <summary>
+		/// Create CSV reader from text reader with custom delimiter.
+		/// </summary>
+		/// <param name="rdr">
+		/// Text reader that provides CSV data.
+		/// </param>
+		/// <param name="delimiter">
+		/// Delimiter used in CSV file.
+		/// </param>
+		/// <exception cref="ArgumentException">
+		/// Thrown when delimiter is empty.
+		/// </exception>
 		public CsvReader(TextReader rdr, string delimiter) {
 			this.rdr = rdr;
 			Delimiter = delimiter;
@@ -60,6 +81,7 @@ namespace NReco.Csv {
 		List<Field> fields = null;
 		int fieldsCount = 0;
 		int linesRead = 0;
+		int skippedLines = 0;
 
 		private int ReadBlockAndCheckEof(char[] buffer, int start, int len, ref bool eof) {
 			if (len == 0)
@@ -139,12 +161,39 @@ namespace NReco.Csv {
 			return f;
 		}
 
+		/// <summary>
+		/// Number of lines skipped by reader (empty lines).
+		/// </summary>
+		public int SkippedLinesCount {
+			get {
+				return skippedLines;
+			}
+		}
+
+		/// <summary>
+		/// Number of lines read by reader.
+		/// </summary>
+		public int LinesReadCount {
+			get {
+				return linesRead;
+			}
+        }
+
+		/// <summary>
+		/// Number of fields in current CSV line.
+		/// </summary>
 		public int FieldsCount {
 			get {
 				return fieldsCount;
 			}
 		}
 
+		/// <summary>
+		/// Get field value by index.
+		/// </summary>
+		/// <param name="idx">
+		/// Field index (0-based).</param>
+		/// <returns></returns>
 		public string this[int idx] {
 			get {
 				if (idx < fieldsCount) {
@@ -155,6 +204,13 @@ namespace NReco.Csv {
 			}
 		}
 
+		/// <summary>
+		/// Get field value length by index.
+		/// </summary>
+		/// <param name="idx">
+		/// Field index (0-based).
+		/// </param>
+		/// <returns></returns>
 		public int GetValueLength(int idx) {
 			if (idx < fieldsCount) {
 				var f = fields[idx];
@@ -163,6 +219,15 @@ namespace NReco.Csv {
 			return -1;
 		}
 
+		/// <summary>
+		/// Process field value by index.
+		/// </summary>
+		/// <param name="idx">
+		/// Field index (0-based).
+		/// </param>
+		/// <param name="handler">
+		/// Action that processes field value (char array, start index, length).
+		/// </param>
 		public void ProcessValueInBuffer(int idx, Action<char[],int,int> handler) {
 			if (idx < fieldsCount) {
 				var f = fields[idx];
@@ -177,6 +242,13 @@ namespace NReco.Csv {
 			}
 		}
 
+		/// <summary>
+		/// Read next CSV line.
+		/// </summary>
+		/// <returns>
+		/// <see langword="true"/> if line was read, <see langword="false"/> if no more data.
+		/// </returns>
+		/// <exception cref="InvalidDataException"></exception>
 		public bool Read() {
 			Start:
 			if (fields == null) {
@@ -276,6 +348,7 @@ namespace NReco.Csv {
 
 			if (fieldsCount==1 && fields[0].Length==0) {
 				// skip empty lines
+				skippedLines++;
 				goto Start;
 			}
 
