@@ -12,11 +12,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 
-namespace NReco.Csv {
+namespace NReco.Csv
+{
 
 	/// <summary>
 	/// Fast and memory efficient implementation of CSV reader (3x times faster than CsvHelper).
@@ -80,8 +79,8 @@ namespace NReco.Csv {
 		int actualBufferLen = 0;
 		List<Field> fields = null;
 		int fieldsCount = 0;
-		int linesRead = 0;
-		int skippedLines = 0;
+		int readLinesCount = 0;
+		int skippedLinesCount = 0;
 
 		private int ReadBlockAndCheckEof(char[] buffer, int start, int len, ref bool eof) {
 			if (len == 0)
@@ -109,7 +108,7 @@ namespace NReco.Csv {
 		}
 
 		private string GetLineTooLongMsg() {
-			return String.Format("CSV line #{1} length exceedes buffer size ({0})", BufferSize, linesRead);
+			return String.Format("CSV line #{1} length exceedes buffer size ({0})", BufferSize, readLinesCount);
 		}
 
 		private int ReadQuotedFieldToEnd(int start, int maxPos, bool eof, ref int escapedQuotesCount) {
@@ -166,18 +165,18 @@ namespace NReco.Csv {
 		/// </summary>
 		public int SkippedLinesCount {
 			get {
-				return skippedLines;
+				return skippedLinesCount;
 			}
 		}
 
 		/// <summary>
 		/// Number of lines read by reader.
 		/// </summary>
-		public int LinesReadCount {
+		public int ReadLinesCount {
 			get {
-				return linesRead;
+				return readLinesCount;
 			}
-        }
+		}
 
 		/// <summary>
 		/// Number of fields in current CSV line.
@@ -269,7 +268,7 @@ namespace NReco.Csv {
 			if (actualBufferLen <= 0) {
 				return false; // no more data
 			}
-			linesRead++;
+			readLinesCount++;
 
 			int maxPos = lineStartPos + actualBufferLen;
 			int charPos = lineStartPos;
@@ -348,7 +347,7 @@ namespace NReco.Csv {
 
 			if (fieldsCount==1 && fields[0].Length==0) {
 				// skip empty lines
-				skippedLines++;
+				skippedLinesCount++;
 				goto Start;
 			}
 
