@@ -3,9 +3,9 @@
   <PropertyGroup>
     <Description>Fast C# CSV parser (data stream reader/writer) for modern .NET apps.</Description>
     <Title>Fast C# CSV parser</Title>
-	<Copyright>Copyright (c) 2017-2023 Vitalii Fedorchenko and contributors</Copyright>
+	<Copyright>Copyright (c) 2017-2024 Vitalii Fedorchenko and contributors</Copyright>
     <AssemblyTitle>NReco.Csv</AssemblyTitle>
-    <VersionPrefix>1.0.2</VersionPrefix>
+    <VersionPrefix>1.0.3</VersionPrefix>
     <Authors>Vitalii Fedorchenko</Authors>
     <TargetFrameworks>netstandard2.0;net45;netstandard1.5</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
