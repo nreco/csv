@@ -32,7 +32,7 @@ namespace NReco.Csv.Tests {
 			csvWriter.NextRecord();
 
 			var expected = "AAA,\"A\"\"AA\",\" AAA \",\"Something, again\",\"Something\nonce more\"\r\nJust one value\r\n";
-			Assert.Equal(expected, strWr.ToString());
+			Assert.Equal(applyEnvNewLine(expected), strWr.ToString());
 
 			strWr = new StringWriter();
 			csvWriter = new CsvWriter(strWr);
@@ -44,10 +44,11 @@ namespace NReco.Csv.Tests {
 			csvWriter.NextRecord();
 
 			expected = ", ,\"\"\"\", aa \r\n";
-			Assert.Equal(expected, strWr.ToString());
+			Assert.Equal(applyEnvNewLine(expected), strWr.ToString());
 		}
 
-
+		// to keep test env-independent let's use platform-specific NewLine constant
+		string applyEnvNewLine(string s) => s.Replace("\r\n", Environment.NewLine);
 
 	}
 }
