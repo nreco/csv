@@ -24,7 +24,7 @@ using (var streamRdr = new StreamReader(inputStream)) {
 Generate CSV to stream:
 ```
 
-using (var streamWr = new StreamWrite(outputStream)) {
+using (var streamWr = new StreamWriter(outputStream)) {
   var csvWriter = new CsvWriter(streamWr);
   // write line
   csvWriter.WriteField("Value with double quote\"");
@@ -38,6 +38,6 @@ using (var streamWr = new StreamWrite(outputStream)) {
 NReco.Csv is in production use at [SeekTable.com](https://www.seektable.com/) and [PivotData microservice](https://www.nrecosite.com/pivotdata_service.aspx).
 
 ## License
-Copyright 2017-2023 Vitaliy Fedorchenko and contributors
+Copyright 2017-2024 Vitaliy Fedorchenko and contributors
 
 Distributed under the MIT license
